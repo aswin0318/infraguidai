@@ -68,6 +68,7 @@ def extract_incidents(log_events: list[dict], log_stream: str) -> list[dict]:
         namespace = k8s.get("namespace_name") or "unknown"
         container = k8s.get("container_name") or "unknown"
         key = (namespace, pod, error_type)
+        ts = event.get("timestamp")
 
         incident = grouped.setdefault(key, {
             "error_type": error_type,
@@ -75,11 +76,17 @@ def extract_incidents(log_events: list[dict], log_stream: str) -> list[dict]:
             "namespace": namespace,
             "pod": pod,
             "container": container,
-            "first_timestamp": event.get("timestamp"),
-            "last_timestamp": event.get("timestamp"),
+            "first_timestamp": ts,
+            "last_timestamp": ts,
             "samples": [],
         })
-        incident["last_timestamp"] = event.get("timestamp")
+        # CloudWatch does not guarantee logEvents are sorted by timestamp, so
+        # track the real min/max rather than assuming arrival order.
+        if ts is not None:
+            if incident["first_timestamp"] is None or ts < incident["first_timestamp"]:
+                incident["first_timestamp"] = ts
+            if incident["last_timestamp"] is None or ts > incident["last_timestamp"]:
+                incident["last_timestamp"] = ts
         if len(incident["samples"]) < 15:
             incident["samples"].append(text[:1000])
     return list(grouped.values())
