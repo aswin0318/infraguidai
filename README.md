@@ -55,4 +55,4 @@ eyes, not an autopilot.
 
 ## Status
 
-Still a work in progress and probably always will be. PRs and ideas welcome.
+Still a work in progress.
