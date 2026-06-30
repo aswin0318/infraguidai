@@ -1,0 +1,70 @@
+{
+  "document_id": "IG-AWS-VPC-001",
+  "title": "AWS VPC Guide",
+  "version": "1.0",
+  "owner": "Rahul Varma",
+  "owner_role": "Solutions Architect",
+  "department": "Architecture",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "reference",
+  "subcategory": "aws-networking",
+  "document_type": "technical-guide",
+  "criticality": "high",
+  "review_cycle": "12 months",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "services_covered": [
+    "VPC",
+    "Subnets",
+    "Route Tables",
+    "Internet Gateway",
+    "NAT Gateway",
+    "Security Groups",
+    "NACL",
+    "VPC Endpoints",
+    "PrivateLink",
+    "Transit Gateway",
+    "VPC Peering",
+    "Route53",
+    "Flow Logs"
+  ],
+  "troubleshooting_scenarios": [
+    "Private EC2 cannot reach internet",
+    "EC2 cannot reach RDS",
+    "ALB 503 errors",
+    "S3 access failure",
+    "Peering connectivity issue",
+    "Interface endpoint failure"
+  ],
+  "terraform_examples": true,
+  "related_documents": [
+    "IG-ARCH-001",
+    "IG-TF-001",
+    "IG-PE-001",
+    "IG-RCA-001"
+  ],
+  "tags": [
+    "aws",
+    "vpc",
+    "networking",
+    "nat-gateway",
+    "security-group",
+    "route-table",
+    "private-link",
+    "transit-gateway",
+    "terraform"
+  ],
+  "search_boost_terms": [
+    "vpc",
+    "nat gateway",
+    "security group",
+    "route table",
+    "subnet",
+    "private subnet",
+    "public subnet",
+    "endpoint",
+    "transit gateway",
+    "peering"
+  ]
+}

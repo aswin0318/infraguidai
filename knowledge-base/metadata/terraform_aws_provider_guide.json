@@ -1,0 +1,76 @@
+{
+  "document_id": "IG-TF-AWS-001",
+  "title": "Terraform AWS Provider Guide",
+  "version": "1.0",
+  "owner": "Rahul Menon",
+  "owner_role": "Platform Engineering Lead",
+  "department": "Platform Engineering",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "platform",
+  "subcategory": "terraform",
+  "document_type": "engineering-standard",
+  "criticality": "high",
+  "review_cycle": "6 months",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "terraform_version": ">= 1.8.0",
+  "aws_provider_version": "~> 6.0",
+  "key_topics": [
+    "Module Design",
+    "Backend Standards",
+    "State Management",
+    "AWS Provider Standards",
+    "Security Standards",
+    "Code Style",
+    "CI/CD Standards",
+    "Terraform Generation Rules"
+  ],
+  "terraform_generation_enabled": true,
+  "llm_guidance_document": true,
+  "mandatory_patterns": [
+    "Variables Instead Of Hardcoding",
+    "Multi-AZ Production Architecture",
+    "Least Privilege IAM",
+    "Resource Tagging",
+    "Encryption By Default",
+    "Remote State",
+    "OIDC Authentication"
+  ],
+  "anti_patterns": [
+    "Hardcoded Values",
+    "Inline Secrets",
+    "AdministratorAccess",
+    "Single Massive State File",
+    "Public Databases",
+    "Static AWS Keys"
+  ],
+  "related_documents": [
+    "IG-TF-001",
+    "IG-AWS-VPC-001",
+    "IG-AWS-IAM-001",
+    "IG-AWS-CF-001",
+    "IG-AWS-BEDROCK-001"
+  ],
+  "tags": [
+    "terraform",
+    "aws",
+    "iac",
+    "platform-engineering",
+    "modules",
+    "state-management",
+    "security",
+    "oidc"
+  ],
+  "search_boost_terms": [
+    "terraform code generation",
+    "terraform standards",
+    "terraform module",
+    "terraform backend",
+    "terraform state",
+    "terraform best practices",
+    "terraform aws provider",
+    "terraform architecture",
+    "terraform security"
+  ]
+}

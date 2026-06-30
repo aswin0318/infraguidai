@@ -1,0 +1,12 @@
+# Injects Cognito config into the static frontend at runtime. auth.js reads
+# these window globals (falling back to placeholders when unset).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: {{ .Values.namespace }}
+data:
+  config.js: |
+    window.__COGNITO_USER_POOL_ID__ = "{{ .Values.cognito.userPoolId }}";
+    window.__COGNITO_APP_CLIENT_ID__ = "{{ .Values.cognito.appClientId }}";
+    window.__COGNITO_REGION__ = "{{ .Values.cognito.region }}";

@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: infraguid
+  namespace: argocd
+spec:
+  description: InfraGuidAI production applications and cluster add-ons
+  sourceRepos:
+    - https://github.com/aswin0318/infraguidai.git
+    - https://aws.github.io/eks-charts
+    - https://kubernetes-sigs.github.io/metrics-server/
+    - https://aws.github.io/aws-for-fluent-bit
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: "*"
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

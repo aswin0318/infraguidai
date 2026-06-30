@@ -1,0 +1,88 @@
+name: CI/CD - ingestion-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "services/ingestion-service/**"
+      - "shared/**"
+      - ".github/workflows/ingestion-service.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "services/ingestion-service/**"
+      - "shared/**"
+      - ".github/workflows/ingestion-service.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  # ───────────── PR — sequential: lint → sca → trivy ─────────────
+  lint:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/_lint.yml
+    with:
+      service-path: services/ingestion-service
+      runtime: python
+
+  sca:
+    needs: [lint]
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/_sca.yml
+    with:
+      service-name: ingestion-service
+      service-path: services/ingestion-service
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  trivy:
+    needs: [sca]
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/_docker-build.yml
+    with:
+      service-name: ingestion-service
+      dockerfile: services/ingestion-service/Dockerfile
+      context: .
+
+  pr-check:
+    name: PR Quality Gate
+    needs: [trivy]
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "All checks passed"
+
+  # ───────────── Push to main — build, publish & deploy ─────────────
+  prepare:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.sha.outputs.short }}
+    steps:
+      - id: sha
+        run: echo "short=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+  publish:
+    needs: [prepare]
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/_docker-publish.yml
+    with:
+      image-name: infragui/ingestion-service
+      tag: ${{ needs.prepare.outputs.sha }}
+      dockerfile: services/ingestion-service/Dockerfile
+      context: .
+
+  cd:
+    needs: [prepare, publish]
+    if: needs.publish.result == 'success'
+    uses: ./.github/workflows/_cd.yml
+    with:
+      chart: ingestion-service
+      image-tag: ${{ needs.prepare.outputs.sha }}

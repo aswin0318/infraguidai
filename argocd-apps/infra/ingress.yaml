@@ -1,0 +1,19 @@
+# Shared ALB Ingress: "/" -> frontend, "/api" -> chat-service.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress
+  namespace: argocd
+spec:
+  project: infraguid
+  source:
+    repoURL: https://github.com/aswin0318/infraguidai.git
+    targetRevision: main
+    path: argocd-apps/infrastructure/ingress
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: infraguid
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

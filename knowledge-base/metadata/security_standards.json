@@ -1,0 +1,100 @@
+{
+"document_id": "IG-SEC-001",
+"title": "Security Standards Guide",
+"version": "1.0",
+"owner": "Nikhil Sharma",
+"owner_role": "Cloud Security Engineer",
+"department": "Security Engineering",
+"classification": "Internal Use Only",
+"status": "Approved",
+"category": "governance",
+"subcategory": "security",
+"document_type": "policy",
+"criticality": "critical",
+"review_cycle": "6 months",
+"created_date": "2026-06-01",
+"last_updated": "2026-06-01",
+"security_domains": [
+"Identity and Access Management",
+"Secrets Management",
+"Encryption",
+"Network Security",
+"Container Security",
+"Kubernetes Security",
+"CI/CD Security",
+"Security Monitoring",
+"Incident Response",
+"Compliance"
+],
+"framework_alignment": [
+"AWS Well-Architected Security Pillar",
+"CIS Benchmarks",
+"NIST Cybersecurity Framework",
+"ISO 27001 Principles"
+],
+"mandatory_controls": [
+"MFA",
+"Least Privilege",
+"Encryption At Rest",
+"Encryption In Transit",
+"CloudTrail",
+"Security Monitoring",
+"Quarterly Access Reviews",
+"Secrets Manager",
+"Formal Security Reviews"
+],
+"required_services": [
+"IAM Identity Center",
+"AWS KMS",
+"AWS Secrets Manager",
+"CloudTrail",
+"GuardDuty",
+"Security Hub",
+"AWS Config"
+],
+"related_documents": [
+"IG-COMP-001",
+"IG-SVC-001",
+"IG-CEL-001",
+"IG-ARCH-001",
+"IG-DEP-001",
+"IG-IR-001",
+"IG-RCA-001"
+],
+"tags": [
+"security",
+"iam",
+"encryption",
+"secrets-management",
+"compliance",
+"incident-response",
+"guardduty",
+"security-hub",
+"cloud-security",
+"governance"
+],
+"keywords": [
+"security standards",
+"iam standards",
+"least privilege",
+"security review",
+"mfa requirements",
+"secrets management",
+"encryption standards",
+"incident response",
+"compliance requirements",
+"security governance"
+],
+"search_boost_terms": [
+"security",
+"iam",
+"mfa",
+"encryption",
+"secret",
+"guardduty",
+"security review",
+"compliance",
+"incident",
+"least privilege"
+]
+}

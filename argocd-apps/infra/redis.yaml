@@ -1,0 +1,21 @@
+# Ephemeral Redis for chat session storage (TTL-based, no persistence needed).
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redis
+  namespace: argocd
+spec:
+  project: infraguid
+  source:
+    repoURL: https://github.com/aswin0318/infraguidai.git
+    targetRevision: main
+    path: argocd-apps/infrastructure/redis
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: infraguid
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,32 @@
+name: chat-service
+namespace: infraguid
+replicas: 2
+serviceAccountName: infraguid-app
+port: 8000
+healthPath: /api/health
+
+image:
+  # <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/infragui/chat-service
+  repository: 901607650789.dkr.ecr.us-east-1.amazonaws.com/infragui/chat-service
+  tag: main-c12580e84d3f1ec6d0c28a4abfc238b1b4c5efa3
+  pullPolicy: IfNotPresent
+
+# Non-secret config. POSTGRES_URI / Cognito / Bedrock model ids are pulled at
+# startup from Secrets Manager via AWS_SECRET_NAME + IRSA.
+env:
+  APP_ENV: production
+  LOG_LEVEL: INFO
+  AWS_REGION: us-east-1
+  AWS_SECRET_NAME: infraguidai/prod/app-secrets
+  FRONTEND_ORIGIN: https://yourdomain.com
+  REDIS_URL: redis://redis:6379/0
+  AGENT_SERVICE_URL: http://agent-service:8001
+  INGESTION_SERVICE_URL: http://ingestion-service:8003
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign Up — InfraGuidAI</title>
+    <meta name="description" content="Create your InfraGuidAI account" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="auth-page">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="auth-logo">IG</div>
+          <h1>Create account</h1>
+          <p>Get started with InfraGuidAI</p>
+        </div>
+
+        <div id="authError" class="auth-error"></div>
+        <div id="authSuccess" class="auth-error" style="color: var(--success); border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.08);"></div>
+
+        <!-- Step 1: Registration Form -->
+        <form id="signupForm" class="auth-form">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" placeholder="John Doe" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="you@company.com" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Min. 8 characters" required minlength="8" />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="Re-enter password" required minlength="8" />
+          </div>
+          <button type="submit" id="signupBtn">Create Account</button>
+        </form>
+
+        <!-- Step 2: Confirmation Code Form (hidden by default) -->
+        <form id="confirmForm" class="auth-form" style="display: none;">
+          <div class="form-group">
+            <label for="confirmCode">Verification Code</label>
+            <input type="text" id="confirmCode" placeholder="Enter the 6-digit code from your email" required minlength="6" maxlength="6" />
+          </div>
+          <button type="submit" id="confirmBtn">Verify & Sign In</button>
+        </form>
+
+        <div class="auth-footer">
+          Already have an account? <a href="/login.html">Sign in</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>
+      // Redirect if already logged in
+      if (AuthManager.isLoggedIn()) {
+        window.location.href = "/";
+      }
+
+      const signupForm = document.getElementById("signupForm");
+      const confirmForm = document.getElementById("confirmForm");
+      const errorBox = document.getElementById("authError");
+      const successBox = document.getElementById("authSuccess");
+      const signupBtn = document.getElementById("signupBtn");
+
+      let pendingEmail = "";
+      let pendingPassword = "";
+
+      signupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errorBox.classList.remove("visible");
+        successBox.classList.remove("visible");
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+          errorBox.textContent = "Passwords do not match";
+          errorBox.classList.add("visible");
+          return;
+        }
+
+        signupBtn.disabled = true;
+        signupBtn.textContent = "Creating account...";
+
+        try {
+          const result = await AuthManager.signup(name, email, password);
+          if (result.status === "confirmation_required") {
+            pendingEmail = email;
+            pendingPassword = password;
+            signupForm.style.display = "none";
+            confirmForm.style.display = "block";
+            successBox.textContent = "Account created! Check your email for the verification code.";
+            successBox.classList.add("visible");
+          }
+        } catch (err) {
+          errorBox.textContent = err.message;
+          errorBox.classList.add("visible");
+          signupBtn.disabled = false;
+          signupBtn.textContent = "Create Account";
+        }
+      });
+
+      confirmForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errorBox.classList.remove("visible");
+        const confirmBtn = document.getElementById("confirmBtn");
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = "Verifying...";
+
+        try {
+          const code = document.getElementById("confirmCode").value.trim();
+          await AuthManager.confirmSignup(pendingEmail, code);
+          // Auto-login after confirmation
+          await AuthManager.login(pendingEmail, pendingPassword);
+          window.location.href = "/";
+        } catch (err) {
+          errorBox.textContent = err.message;
+          errorBox.classList.add("visible");
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = "Verify & Sign In";
+        }
+      });
+    </script>
+  </body>
+</html>

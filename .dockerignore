@@ -1,0 +1,15 @@
+.git
+.gitignore
+**/__pycache__
+**/*.pyc
+.venv
+venv
+backend
+backend_app.zip
+*.zip
+terraform
+.env
+secret.json
+*.md
+!shared/**/*.md
+.claude

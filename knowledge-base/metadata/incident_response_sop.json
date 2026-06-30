@@ -1,0 +1,64 @@
+{
+  "document_id": "IG-IR-001",
+  "title": "Incident Response SOP",
+  "version": "1.0",
+  "owner": "Arjun Nair",
+  "owner_role": "Cloud Operations Lead",
+  "department": "Operations",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "operations",
+  "subcategory": "incident-management",
+  "document_type": "sop",
+  "criticality": "critical",
+  "review_cycle": "6 months",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "incident_types": [
+    "EC2 Failures",
+    "EKS Failures",
+    "ALB Failures",
+    "CloudFront Failures",
+    "RDS Failures",
+    "EFS Failures",
+    "IAM Incidents",
+    "Security Incidents"
+  ],
+  "severity_levels": [
+    "Sev-1",
+    "Sev-2",
+    "Sev-3",
+    "Sev-4"
+  ],
+  "related_documents": [
+    "IG-COMP-001",
+    "IG-ARCH-001",
+    "IG-SEC-001",
+    "IG-DEP-001",
+    "IG-RCA-001"
+  ],
+  "tags": [
+    "incident-response",
+    "operations",
+    "security",
+    "cloudfront",
+    "alb",
+    "rds",
+    "eks",
+    "ec2",
+    "efs",
+    "aws"
+  ],
+  "search_boost_terms": [
+    "incident",
+    "outage",
+    "recovery",
+    "rds",
+    "alb",
+    "cloudfront",
+    "eks",
+    "security",
+    "escalation",
+    "rca"
+  ]
+}

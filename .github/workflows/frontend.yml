@@ -1,0 +1,76 @@
+name: CI/CD - frontend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  # ───────────── PR — sequential: lint → trivy ─────────────
+  lint:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/_lint.yml
+    with:
+      service-path: frontend
+      runtime: static
+
+  trivy:
+    needs: [lint]
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/_docker-build.yml
+    with:
+      service-name: frontend
+      dockerfile: frontend/Dockerfile
+      context: .
+
+  pr-check:
+    name: PR Quality Gate
+    needs: [trivy]
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "All checks passed"
+
+  # ───────────── Push to main — build, publish & deploy ─────────────
+  prepare:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.sha.outputs.short }}
+    steps:
+      - id: sha
+        run: echo "short=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+  publish:
+    needs: [prepare]
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/_docker-publish.yml
+    with:
+      image-name: infragui/frontend
+      tag: ${{ needs.prepare.outputs.sha }}
+      dockerfile: frontend/Dockerfile
+      context: .
+
+  cd:
+    needs: [prepare, publish]
+    if: needs.publish.result == 'success'
+    uses: ./.github/workflows/_cd.yml
+    with:
+      chart: frontend
+      image-tag: ${{ needs.prepare.outputs.sha }}

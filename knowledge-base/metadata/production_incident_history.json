@@ -1,0 +1,59 @@
+{
+  "document_id": "IG-RCA-001",
+  "title": "Production Incident History",
+  "version": "1.0",
+  "owner": "Arjun Nair",
+  "owner_role": "Cloud Operations Lead",
+  "department": "Operations",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "operations",
+  "subcategory": "incident-history",
+  "document_type": "knowledge-base",
+  "criticality": "high",
+  "review_cycle": "quarterly",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "incident_count": 5,
+  "included_rcas": [
+    "RCA-001 Route Table Misconfiguration",
+    "RCA-002 ALB Health Check Failure",
+    "RCA-003 Security Group Misconfiguration",
+    "RCA-004 ChromaDB Service Failure",
+    "RCA-005 IAM Permission Failure"
+  ],
+  "search_use_cases": [
+    "Have we seen this outage before",
+    "Previous ALB incidents",
+    "Networking failures",
+    "IAM permission issues",
+    "AI platform outages",
+    "Lessons learned",
+    "Corrective actions",
+    "Preventive actions"
+  ],
+  "tags": [
+    "rca",
+    "incident-history",
+    "outage",
+    "operations",
+    "alb",
+    "networking",
+    "iam",
+    "chromadb",
+    "security-groups",
+    "route-tables"
+  ],
+  "search_boost_terms": [
+    "incident",
+    "rca",
+    "outage",
+    "root cause",
+    "alb",
+    "security group",
+    "route table",
+    "iam",
+    "chromadb",
+    "lessons learned"
+  ]
+}

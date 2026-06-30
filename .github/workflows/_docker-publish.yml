@@ -1,0 +1,56 @@
+name: Reusable - Docker Publish (ECR)
+
+on:
+  workflow_call:
+    inputs:
+      image-name:
+        description: "ECR repo name, e.g. infragui/chat-service"
+        required: true
+        type: string
+      tag:
+        required: true
+        type: string
+      dockerfile:
+        required: true
+        type: string
+      context:
+        required: false
+        default: "."
+        type: string
+    outputs:
+      image-uri:
+        description: "Full pushed image URI"
+        value: ${{ jobs.publish.outputs.image-uri }}
+
+permissions:
+  id-token: write   # OIDC federation to AWS
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    outputs:
+      image-uri: ${{ steps.push.outputs.image-uri }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push
+        id: push
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          URI="$REGISTRY/${{ inputs.image-name }}:${{ inputs.tag }}"
+          docker build -f "${{ inputs.dockerfile }}" -t "$URI" "${{ inputs.context }}"
+          docker push "$URI"
+          echo "image-uri=$URI" >> "$GITHUB_OUTPUT"
+          echo "Pushed $URI"

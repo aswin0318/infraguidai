@@ -1,0 +1,73 @@
+{
+  "document_id": "IG-COST-001",
+  "title": "Cost Optimization Guide",
+  "version": "1.0",
+  "owner": "Rahul Menon",
+  "owner_role": "Solutions Architect",
+  "department": "Platform Engineering",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "platform",
+  "subcategory": "finops",
+  "document_type": "guide",
+  "criticality": "medium",
+  "review_cycle": "quarterly",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "covered_services": [
+    "EC2",
+    "EBS",
+    "EFS",
+    "RDS",
+    "S3",
+    "CloudFront",
+    "EKS",
+    "Lambda",
+    "Bedrock",
+    "Route53",
+    "NAT Gateway"
+  ],
+  "finops_focus_areas": [
+    "Rightsizing",
+    "Idle Resource Detection",
+    "Savings Plans",
+    "Reserved Instances",
+    "Cost Allocation",
+    "Budget Management",
+    "Cloud Cost Governance"
+  ],
+  "review_frequency": {
+    "cost_review": "monthly",
+    "rightsizing": "monthly",
+    "idle_resource_review": "weekly"
+  },
+  "related_documents": [
+    "IG-COMP-001",
+    "IG-ARCH-001",
+    "IG-TF-001",
+    "IG-PE-001"
+  ],
+  "tags": [
+    "finops",
+    "cost-optimization",
+    "aws",
+    "rightsizing",
+    "savings-plans",
+    "reserved-instances",
+    "budgeting",
+    "cloud-costs",
+    "bedrock"
+  ],
+  "search_boost_terms": [
+    "cost",
+    "finops",
+    "rightsizing",
+    "savings plans",
+    "reserved instances",
+    "budget",
+    "optimization",
+    "idle resources",
+    "bedrock cost",
+    "eks cost"
+  ]
+}

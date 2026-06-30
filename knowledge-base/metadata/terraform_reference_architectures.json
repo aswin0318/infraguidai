@@ -1,0 +1,51 @@
+{
+  "document_id": "terraform_reference_architectures",
+  "title": "Terraform Reference Architectures",
+  "version": "1.0",
+  "owner": "Priya Nair",
+  "owner_role": "Principal Platform Architect",
+  "department": "Platform Engineering",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "platform",
+  "subcategory": "terraform reference architectures",
+  "document_type": "guide",
+  "criticality": "high",
+  "review_cycle": "6 months",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "key_topics": [
+    "static website architecture",
+    "web application architecture",
+    "serverless API architecture",
+    "AI platform architecture",
+    "Terraform module composition"
+  ],
+  "tags": [
+    "terraform",
+    "reference-architecture",
+    "aws",
+    "iac",
+    "modules"
+  ],
+  "search_boost_terms": [
+    "reference architecture",
+    "terraform composition",
+    "s3 cloudfront",
+    "alb ec2 rds",
+    "api gateway lambda dynamodb",
+    "bedrock platform"
+  ],
+  "related_documents": [
+    "terraform_standards.md",
+    "terraform_module_catalog.md",
+    "terraform_aws_provider_guide.md",
+    "architecture_standards_guide.md"
+  ],
+  "primary_users": [
+    "Platform Engineer",
+    "DevOps Engineer",
+    "Cloud Architect",
+    "Solutions Architect"
+  ]
+}

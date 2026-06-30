@@ -1,0 +1,124 @@
+# Kubernetes Gateway API resources, served by the AWS Load Balancer Controller
+# (v2.14+, feature gate ALBGatewayAPI). Provisions an internet-facing ALB with
+# HTTPS terminated using the ACM certificate.
+#
+# REPLACE_ACM_ARN is substituted with the terraform output `acm_certificate_arn`
+# by deploy.sh before this manifest is applied.
+---
+# Cluster-scoped GatewayClass handled by the AWS Load Balancer Controller.
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: alb
+spec:
+  controllerName: gateway.k8s.aws/alb
+---
+# ALB-specific configuration (scheme + TLS cert). The Gateway references this
+# via spec.infrastructure.parametersRef. TLS certs cannot be set via the
+# Gateway listener certificateRefs with the ALB controller — they live here.
+apiVersion: gateway.k8s.aws/v1beta1
+kind: LoadBalancerConfiguration
+metadata:
+  name: infraguid-lbconfig
+  namespace: infraguid
+spec:
+  scheme: internet-facing
+  ipAddressType: ipv4
+  listenerConfigurations:
+    - protocolPort: HTTPS:443
+      defaultCertificate: REPLACE_ACM_ARN
+---
+# The Gateway provisions the internet-facing ALB with HTTP:80 + HTTPS:443.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: infraguid
+  namespace: infraguid
+spec:
+  gatewayClassName: alb
+  infrastructure:
+    parametersRef:
+      group: gateway.k8s.aws
+      kind: LoadBalancerConfiguration
+      name: infraguid-lbconfig
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: Same
+---
+# Application routing: /api -> chat-service, everything else -> frontend.
+# Attached to both the http and https listeners so the site works on either.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: infraguid-routes
+  namespace: infraguid
+spec:
+  parentRefs:
+    - name: infraguid
+      sectionName: http
+    - name: infraguid
+      sectionName: https
+  hostnames:
+    - "nutritrack360.in"
+    - "www.nutritrack360.in"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+      backendRefs:
+        - name: chat-service
+          port: 8000
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: frontend
+          port: 80
+---
+# chat-service serves under /api, so its ALB target group must health-check
+# /api/health rather than the default "/" (which would 404 and mark it down).
+apiVersion: gateway.k8s.aws/v1beta1
+kind: TargetGroupConfiguration
+metadata:
+  name: chat-service-tgconfig
+  namespace: infraguid
+spec:
+  targetReference:
+    kind: Service
+    name: chat-service
+  defaultConfiguration:
+    # Services are ClusterIP, so target pod IPs directly (not instance/NodePort).
+    targetType: ip
+    healthCheckConfig:
+      healthCheckPath: /api/health
+      healthCheckProtocol: HTTP
+      healthCheckInterval: 30
+      healthyThresholdCount: 3
+---
+# Frontend (nginx) target group — IP targets, default "/" health check.
+apiVersion: gateway.k8s.aws/v1beta1
+kind: TargetGroupConfiguration
+metadata:
+  name: frontend-tgconfig
+  namespace: infraguid
+spec:
+  targetReference:
+    kind: Service
+    name: frontend
+  defaultConfiguration:
+    targetType: ip
+    healthCheckConfig:
+      healthCheckPath: /
+      healthCheckProtocol: HTTP

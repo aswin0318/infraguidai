@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin — InfraGuidAI</title>
+    <meta name="description" content="InfraGuidAI Knowledge Base Admin — manage documents, chunks, and ingestion." />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-icon">IG</div>
+          <div class="brand-text">
+            <strong>InfraGuidAI</strong>
+            <span>Admin Portal</span>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="/">
+            <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Chat
+          </a>
+          <a class="active" href="/admin.html">
+            <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+            Admin
+          </a>
+        </nav>
+        <div class="sidebar-user" id="userBlock"></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>Knowledge Base Admin</h1>
+            <p>Monitor ingestion, document inventory, and vector chunks.</p>
+          </div>
+          <div id="healthStatus" class="status-pill">Checking</div>
+        </header>
+
+        <section class="workspace" style="overflow-y:auto; max-height:calc(100vh - 90px);">
+          <div id="alert" class="alert" hidden></div>
+          <div class="admin-grid">
+            <div class="panel metric"><span>Documents</span><strong id="docCount">0</strong></div>
+            <div class="panel metric"><span>DB Chunks</span><strong id="chunkCount">0</strong></div>
+            <div class="panel metric"><span>Vector Chunks</span><strong id="vectorChunkCount">0</strong></div>
+            <div class="panel metric"><span>Last Ingestion</span><strong id="lastIngestion">Never</strong></div>
+          </div>
+
+          <div class="admin-actions">
+            <button id="refreshButton" type="button" class="secondary">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline;vertical-align:-2px;margin-right:6px"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              Refresh
+            </button>
+            <button id="uploadDocButton" type="button" class="secondary">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline;vertical-align:-2px;margin-right:6px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload Document
+            </button>
+            <input type="file" id="fileInput" accept=".md" style="display: none;" />
+            <button id="ingestButton" type="button">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline;vertical-align:-2px;margin-right:6px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Run Ingestion
+            </button>
+          </div>
+
+          <section class="panel" style="padding: 20px; margin-bottom: 20px;">
+            <h2 class="section-title">Documents</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Path</th>
+                    <th>Chunks</th>
+                    <th>Owner</th>
+                  </tr>
+                </thead>
+                <tbody id="documentsBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" style="padding: 20px;">
+            <h2 class="section-title">Chunk Explorer</h2>
+            <div id="chunks" class="chunk-grid"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/admin.js"></script>
+  </body>
+</html>

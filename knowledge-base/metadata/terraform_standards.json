@@ -1,0 +1,75 @@
+{
+  "document_id": "IG-TF-001",
+  "title": "Terraform Standards Guide",
+  "version": "1.0",
+  "owner": "Sneha Iyer",
+  "owner_role": "Senior DevOps Engineer",
+  "department": "Platform Engineering",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "platform",
+  "subcategory": "infrastructure-as-code",
+  "document_type": "standard",
+  "criticality": "high",
+  "review_cycle": "6 months",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "terraform_version": ">=1.8",
+  "supported_providers": [
+    "AWS",
+    "Kubernetes",
+    "Helm",
+    "TLS",
+    "Random"
+  ],
+  "backend_standard": {
+    "type": "S3",
+    "locking": "DynamoDB",
+    "encryption": true
+  },
+  "mandatory_validation_tools": [
+    "terraform fmt",
+    "terraform validate",
+    "tflint",
+    "checkov",
+    "tfsec"
+  ],
+  "mandatory_controls": [
+    "Peer Review",
+    "Security Review",
+    "State Encryption",
+    "State Locking",
+    "CI/CD Deployment",
+    "Drift Detection"
+  ],
+  "related_documents": [
+    "IG-COMP-001",
+    "IG-ARCH-001",
+    "IG-SEC-001",
+    "IG-DEP-001",
+    "IG-IR-001"
+  ],
+  "tags": [
+    "terraform",
+    "iac",
+    "aws",
+    "platform-engineering",
+    "devops",
+    "infrastructure",
+    "state-management",
+    "security",
+    "cicd"
+  ],
+  "search_boost_terms": [
+    "terraform",
+    "module",
+    "state",
+    "backend",
+    "provider",
+    "drift",
+    "plan",
+    "apply",
+    "iam",
+    "eks"
+  ]
+}

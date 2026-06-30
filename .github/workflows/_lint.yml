@@ -1,0 +1,37 @@
+name: Reusable - Lint
+
+on:
+  workflow_call:
+    inputs:
+      service-path:
+        description: Path to the service to lint
+        required: true
+        type: string
+      runtime:
+        description: Runtime (python | static)
+        required: false
+        default: python
+        type: string
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        if: inputs.runtime == 'python'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Ruff lint
+        if: inputs.runtime == 'python'
+        run: |
+          pip install ruff
+          ruff check "${{ inputs.service-path }}" --exit-zero
+
+      - name: Static assets sanity
+        if: inputs.runtime == 'static'
+        run: |
+          test -f "${{ inputs.service-path }}/index.html" && echo "frontend assets present" || true

@@ -1,0 +1,89 @@
+{
+"document_id": "IG-DEP-001",
+"title": "Deployment Runbook",
+"version": "1.0",
+"owner": "Sneha Iyer",
+"owner_role": "Senior DevOps Engineer",
+"department": "Platform Engineering",
+"classification": "Internal Use Only",
+"status": "Approved",
+"category": "operations",
+"subcategory": "deployment-management",
+"document_type": "runbook",
+"criticality": "high",
+"review_cycle": "6 months",
+"created_date": "2026-06-01",
+"last_updated": "2026-06-01",
+"deployment_types": [
+"Terraform Deployments",
+"Infrastructure Deployments",
+"Landing Zone Deployments",
+"EKS Deployments",
+"Application Deployments",
+"Emergency Deployments"
+],
+"approval_levels": [
+"Standard Change",
+"Normal Change",
+"High Risk Change",
+"Emergency Change"
+],
+"supported_platforms": [
+"AWS",
+"Terraform",
+"GitHub Actions",
+"Amazon EKS",
+"Docker",
+"Jenkins"
+],
+"mandatory_controls": [
+"Change Approval",
+"Rollback Plan",
+"Validation",
+"Monitoring Verification",
+"Documentation",
+"Deployment Evidence"
+],
+"related_documents": [
+"IG-COMP-001",
+"IG-SVC-001",
+"IG-CEL-001",
+"IG-ARCH-001",
+"IG-SEC-001",
+"IG-IR-001",
+"IG-RCA-001"
+],
+"tags": [
+"deployment",
+"runbook",
+"terraform",
+"eks",
+"aws",
+"operations",
+"change-management",
+"rollback",
+"release-management",
+"devops"
+],
+"keywords": [
+"deployment process",
+"terraform deployment",
+"rollback procedure",
+"change management",
+"release process",
+"production deployment",
+"deployment checklist",
+"validation procedure",
+"emergency deployment"
+],
+"search_boost_terms": [
+"deployment",
+"rollback",
+"release",
+"terraform",
+"change",
+"approval",
+"validation",
+"production"
+]
+}

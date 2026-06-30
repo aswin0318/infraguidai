@@ -1,0 +1,98 @@
+name: CI/CD - Infrastructure (Terraform)
+
+on:
+  # TEMPORARILY DISABLED TO SAVE AWS FREE TIER CREDITS (until 2026-06-24)
+  # Uncomment below to re-enable terraform CI
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - "terraform/**"
+  # pull_request:
+  #   branches: [main]
+  #   paths:
+  #     - "terraform/**"
+  # schedule:
+  #   - cron: "0 2 * * *"   # nightly at 02:00 UTC — drift detection
+  workflow_dispatch:  # Manual trigger only
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Format check
+        run: terraform -chdir=terraform fmt -check -recursive
+
+      - name: Init (no backend) and validate
+        run: |
+          terraform -chdir=terraform init -backend=false
+          terraform -chdir=terraform validate
+
+
+  plan:
+    if: github.event_name == 'pull_request'
+    needs: [validate]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Terraform plan
+        run: |
+          terraform -chdir=terraform init
+          terraform -chdir=terraform plan -input=false
+
+  apply:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Terraform apply
+        run: |
+          terraform -chdir=terraform init
+          terraform -chdir=terraform apply -input=false -auto-approve
+
+  drift:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Reconcile drift
+        run: |
+          terraform -chdir=terraform init
+          terraform -chdir=terraform apply -input=false -auto-approve

@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-load-balancer-controller
+  namespace: argocd
+spec:
+  project: infraguid
+  source:
+    repoURL: https://aws.github.io/eks-charts
+    chart: aws-load-balancer-controller
+    targetRevision: 1.8.1
+    helm:
+      values: |
+        clusterName: infraguidai-prod
+        region: us-east-1
+        # terraform output: vpc_id
+        vpcId: vpc-0731dfac9ae6b4b92
+        serviceAccount:
+          create: true
+          name: aws-load-balancer-controller
+          annotations:
+            # terraform output: irsa_alb_controller_role_arn
+            eks.amazonaws.com/role-arn: arn:aws:iam::901607650789:role/infraguidai-prod-alb-controller-irsa
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

@@ -1,0 +1,51 @@
+name: Reusable - CD (open PR to bump Helm image tag)
+
+on:
+  workflow_call:
+    inputs:
+      chart:
+        description: "Chart dir under argocd-apps/microservices"
+        required: true
+        type: string
+      image-tag:
+        required: true
+        type: string
+
+# Branch protection on main forbids direct pushes, so CD opens a PR instead of
+# pushing. Needs "Allow GitHub Actions to create and approve pull requests"
+# enabled in repo Settings -> Actions -> General.
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Bump image tag in values.yaml
+        run: |
+          FILE="argocd-apps/microservices/${{ inputs.chart }}/values.yaml"
+          sed -i -E "s|^(\s*tag:).*|\1 ${{ inputs.image-tag }}|" "$FILE"
+          echo "----- $FILE -----"
+          grep -nE 'repository:|tag:' "$FILE"
+
+      - name: Open deploy PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          base: main
+          branch: deploy/${{ inputs.chart }}-${{ inputs.image-tag }}
+          delete-branch: true
+          commit-message: "ci(${{ inputs.chart }}): deploy ${{ inputs.image-tag }}"
+          title: "Deploy ${{ inputs.chart }} → ${{ inputs.image-tag }}"
+          labels: deploy
+          body: |
+            Automated GitOps deploy PR.
+
+            Bumps `argocd-apps/microservices/${{ inputs.chart }}/values.yaml`
+            image tag to **`${{ inputs.image-tag }}`**.
+
+            Merging this PR makes ArgoCD sync the new image onto the cluster.

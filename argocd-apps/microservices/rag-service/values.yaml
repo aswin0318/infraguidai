@@ -1,0 +1,25 @@
+name: rag-service
+namespace: infraguid
+replicas: 2
+serviceAccountName: infraguid-app
+port: 8002
+healthPath: /health
+
+image:
+  repository: 901607650789.dkr.ecr.us-east-1.amazonaws.com/infragui/rag-service
+  tag: main-c12580e84d3f1ec6d0c28a4abfc238b1b4c5efa3
+  pullPolicy: IfNotPresent
+
+env:
+  APP_ENV: production
+  LOG_LEVEL: INFO
+  AWS_REGION: us-east-1
+  AWS_SECRET_NAME: infraguidai/prod/app-secrets
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

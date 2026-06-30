@@ -1,0 +1,75 @@
+{
+  "document_id": "IG-AWS-IAM-001",
+  "title": "AWS IAM Guide",
+  "version": "1.0",
+  "owner": "Rahul Menon",
+  "owner_role": "Security Engineering Lead",
+  "department": "Security Engineering",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "reference",
+  "subcategory": "aws-security",
+  "document_type": "technical-guide",
+  "criticality": "high",
+  "review_cycle": "12 months",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "services_covered": [
+    "IAM",
+    "STS",
+    "IAM Identity Center",
+    "AWS Organizations",
+    "OIDC",
+    "IAM Roles",
+    "IAM Policies",
+    "Permission Boundaries",
+    "SCPs"
+  ],
+  "key_topics": [
+    "IAM Evaluation Logic",
+    "Cross Account Access",
+    "AssumeRole",
+    "OIDC Federation",
+    "GitHub Actions Authentication",
+    "Permission Boundaries",
+    "AccessDenied Troubleshooting"
+  ],
+  "terraform_examples": true,
+  "troubleshooting_scenarios": [
+    "Administrator AccessDenied",
+    "EC2 cannot access S3",
+    "Lambda cannot access Secrets Manager",
+    "GitHub OIDC failure",
+    "Role assumption failure",
+    "KMS access denied"
+  ],
+  "related_documents": [
+    "IG-SEC-001",
+    "IG-TF-001",
+    "IG-PE-001",
+    "IG-AWS-VPC-001"
+  ],
+  "tags": [
+    "aws",
+    "iam",
+    "sts",
+    "oidc",
+    "identity-center",
+    "security",
+    "authorization",
+    "authentication",
+    "scp"
+  ],
+  "search_boost_terms": [
+    "access denied",
+    "assume role",
+    "iam role",
+    "policy",
+    "oidc",
+    "identity center",
+    "permission boundary",
+    "scp",
+    "trust policy",
+    "sts"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "document_id": "IG-AWS-CF-001",
+  "title": "AWS CloudFront Guide",
+  "version": "1.0",
+  "owner": "Rahul Varma",
+  "owner_role": "Solutions Architect",
+  "department": "Architecture",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "reference",
+  "subcategory": "aws-networking-cdn",
+  "document_type": "technical-guide",
+  "criticality": "high",
+  "review_cycle": "12 months",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "services_covered": [
+    "CloudFront",
+    "AWS WAF",
+    "S3",
+    "ALB",
+    "CloudFront Functions",
+    "Lambda@Edge"
+  ],
+  "key_topics": [
+    "Caching",
+    "Cache Policies",
+    "OAC",
+    "Signed URLs",
+    "Signed Cookies",
+    "WAF Integration",
+    "Cost Optimization",
+    "Monitoring"
+  ],
+  "terraform_examples": true,
+  "troubleshooting_scenarios": [
+    "Serving stale content",
+    "Low cache hit ratio",
+    "403 Access Denied",
+    "502 Bad Gateway",
+    "504 Gateway Timeout",
+    "WAF not blocking requests",
+    "High CloudFront costs"
+  ],
+  "related_documents": [
+    "IG-AWS-VPC-001",
+    "IG-SEC-001",
+    "IG-PE-001",
+    "IG-COST-001"
+  ],
+  "tags": [
+    "cloudfront",
+    "cdn",
+    "waf",
+    "caching",
+    "oac",
+    "lambda-edge",
+    "performance",
+    "security"
+  ],
+  "search_boost_terms": [
+    "cache hit ratio",
+    "cloudfront 403",
+    "cloudfront 502",
+    "cloudfront 504",
+    "signed url",
+    "signed cookie",
+    "oac",
+    "waf",
+    "cdn"
+  ]
+}

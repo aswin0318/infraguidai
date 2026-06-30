@@ -1,0 +1,55 @@
+name: CI/CD - log-intel-lambda
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "services/log-intel-lambda/**"
+      - ".github/workflows/log-intel-lambda.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "services/log-intel-lambda/**"
+      - ".github/workflows/log-intel-lambda.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  lint:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/_lint.yml
+    with:
+      service-path: services/log-intel-lambda
+      runtime: python
+
+  deploy:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Package and deploy
+        env:
+          ARTIFACTS_BUCKET: ${{ vars.LAMBDA_ARTIFACTS_BUCKET }}
+          FUNCTION_NAME: infraguidai-prod-log-intel
+        run: |
+          cd services/log-intel-lambda
+          zip -r /tmp/log-intel-lambda.zip . -x '*.pyc' '__pycache__/*' 'README.md'
+          KEY="log-intel-lambda/${GITHUB_SHA::7}.zip"
+          aws s3 cp /tmp/log-intel-lambda.zip "s3://$ARTIFACTS_BUCKET/$KEY"
+          aws lambda update-function-code \
+            --function-name "$FUNCTION_NAME" \
+            --s3-bucket "$ARTIFACTS_BUCKET" \
+            --s3-key "$KEY"

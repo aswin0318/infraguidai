@@ -1,0 +1,3 @@
+# The Lambda runtime (python3.12) bundles boto3/botocore, so no third-party
+# dependencies are required. Listed for local testing parity only.
+# boto3>=1.34

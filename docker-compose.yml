@@ -1,0 +1,107 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: infraguid
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d infraguid"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --save "" --appendonly no --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  rag-service:
+    build:
+      context: .
+      dockerfile: services/rag-service/Dockerfile
+    env_file: .env
+    environment:
+      POSTGRES_URI: postgresql+asyncpg://postgres:postgres@postgres:5432/infraguid
+    ports:
+      - "8002:8002"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./knowledge-base:/app/knowledge-base:ro
+
+  agent-service:
+    build:
+      context: .
+      dockerfile: services/agent-service/Dockerfile
+    env_file: .env
+    environment:
+      RAG_SERVICE_URL: http://rag-service:8002
+    ports:
+      - "8001:8001"
+    depends_on:
+      - rag-service
+    volumes:
+      - ./knowledge-base:/app/knowledge-base:ro
+
+  ingestion-service:
+    build:
+      context: .
+      dockerfile: services/ingestion-service/Dockerfile
+    env_file: .env
+    environment:
+      POSTGRES_URI: postgresql+asyncpg://postgres:postgres@postgres:5432/infraguid
+      KNOWLEDGE_BASE_PATH: /app/knowledge-base
+    ports:
+      - "8003:8003"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./knowledge-base:/app/knowledge-base:ro
+
+  chat-service:
+    build:
+      context: .
+      dockerfile: services/chat-service/Dockerfile
+    env_file: .env
+    environment:
+      POSTGRES_URI: postgresql+asyncpg://postgres:postgres@postgres:5432/infraguid
+      REDIS_URL: redis://redis:6379/0
+      AGENT_SERVICE_URL: http://agent-service:8001
+      INGESTION_SERVICE_URL: http://ingestion-service:8003
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      agent-service:
+        condition: service_started
+      ingestion-service:
+        condition: service_started
+
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - chat-service
+
+volumes:
+  pgdata:

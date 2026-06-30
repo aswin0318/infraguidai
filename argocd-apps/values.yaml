@@ -1,0 +1,26 @@
+# Global values referenced across the InfraGuidAI GitOps tree.
+# These are documented defaults; per-chart values.yaml hold the concrete
+# image repositories and tags that CI bumps.
+global:
+  project: infraguidai
+  environment: prod
+  region: us-east-1
+  namespace: infraguid
+
+  # Fill these in once (or let CI/sed substitute them):
+  gitRepo: https://github.com/aswin0318/infraguidai.git
+  # ECR registry base: <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com
+  ecrRegistry: 901607650789.dkr.ecr.us-east-1.amazonaws.com
+  ecrNamespace: infragui
+
+  # Secrets Manager secret the app self-loads via AWS_SECRET_NAME (+ IRSA).
+  awsSecretName: infraguidai/prod/app-secrets
+
+  # IRSA role ARN annotated on the application service account
+  # (terraform output: irsa_app_role_arn).
+  appRoleArn: arn:aws:iam::901607650789:role/infraguidai-prod-app-irsa
+
+  # Public hostname + ACM cert for the ALB ingress
+  # (terraform outputs: app_url, acm_certificate_arn).
+  domain: nutritrack360.in
+  acmCertificateArn: arn:aws:acm:us-east-1:901607650789:certificate/5e3e20f5-5666-414c-b5dc-0345e405082b

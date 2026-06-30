@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>InfraGuidAI — Operations Copilot</title>
+    <meta name="description" content="InfraGuidAI DevOps Operations Copilot for runbooks, incidents, AWS standards, and Terraform." />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-icon">IG</div>
+          <div class="brand-text">
+            <strong>InfraGuidAI</strong>
+            <span>Control Plane</span>
+          </div>
+        </div>
+        <nav class="nav" id="navMenu">
+          <a class="active" href="/">
+            <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Chat
+          </a>
+          <a href="/admin.html" id="adminLink" style="display:none;">
+            <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+            Admin
+          </a>
+        </nav>
+        <div class="sidebar-user" id="userBlock"></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>InfraGuidAI Console</h1>
+            <p>Platform Engineering & Operations</p>
+          </div>
+          <div id="healthStatus" class="status-pill">Checking</div>
+        </header>
+
+        <section class="workspace">
+          <div id="alert" class="alert" hidden></div>
+          <div class="chat-layout">
+            <section class="panel chat-panel">
+              <div id="messages" class="messages"></div>
+              <form id="chatForm" class="composer">
+                <textarea id="messageInput" placeholder="Ask a DevOps question..." required rows="1"></textarea>
+                <button class="btn-send" id="sendButton" type="submit" title="Send message">
+                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+              </form>
+            </section>
+            <aside class="panel side-panel">
+              <section>
+                <h2>Quick Prompts</h2>
+                <div class="quick-actions">
+                  <button data-prompt="Compare our deployment process with the incident rollback procedure.">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline;vertical-align:-2px;margin-right:6px;opacity:0.5"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                    Deploy + Rollback
+                  </button>
+                  <button data-prompt="Summarize RCA-005 and tell me what runbook checks should prevent it.">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline;vertical-align:-2px;margin-right:6px;opacity:0.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    RCA + Runbook
+                  </button>
+                  <button data-prompt="Generate Terraform for a production VPC and include required security controls.">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline;vertical-align:-2px;margin-right:6px;opacity:0.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Terraform + Security
+                  </button>
+                  <button data-prompt="What cost controls should we apply to CloudFront and Bedrock?">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline;vertical-align:-2px;margin-right:6px;opacity:0.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Cost Controls
+                  </button>
+                </div>
+              </section>
+              <section>
+                <h2>Sources</h2>
+                <div id="sources" class="source-list"></div>
+              </section>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/chat.js"></script>
+  </body>
+</html>

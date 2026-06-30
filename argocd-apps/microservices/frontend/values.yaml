@@ -1,0 +1,22 @@
+name: frontend
+namespace: infraguid
+replicas: 2
+
+image:
+  repository: 901607650789.dkr.ecr.us-east-1.amazonaws.com/infragui/frontend
+  tag: main-c12580e84d3f1ec6d0c28a4abfc238b1b4c5efa3
+  pullPolicy: IfNotPresent
+
+# Cognito config injected into /js/config.js (terraform outputs).
+cognito:
+  userPoolId: us-east-1_MTmQfxrgl
+  appClientId: 3bsocrfmke8h7q0rn0i1b4q7cn
+  region: us-east-1
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi

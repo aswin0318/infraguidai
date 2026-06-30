@@ -1,0 +1,70 @@
+{
+  "document_id": "IG-PE-001",
+  "title": "Platform Engineering Handbook",
+  "version": "1.0",
+  "owner": "Arjun Nair",
+  "owner_role": "Cloud Operations Lead",
+  "department": "Platform Engineering",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "platform",
+  "subcategory": "platform-operations",
+  "document_type": "handbook",
+  "criticality": "high",
+  "review_cycle": "6 months",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "platform_scope": [
+    "AWS",
+    "Terraform",
+    "EKS",
+    "CI/CD",
+    "Observability",
+    "Operations",
+    "SRE",
+    "Security"
+  ],
+  "key_topics": [
+    "Service Ownership",
+    "Platform Lifecycle",
+    "Kubernetes Standards",
+    "Monitoring",
+    "Logging",
+    "SRE Practices",
+    "Disaster Recovery",
+    "Capacity Planning",
+    "Operational Excellence"
+  ],
+  "related_documents": [
+    "IG-COMP-001",
+    "IG-ARCH-001",
+    "IG-SEC-001",
+    "IG-TF-001",
+    "IG-DEP-001",
+    "IG-IR-001",
+    "IG-RCA-001"
+  ],
+  "tags": [
+    "platform-engineering",
+    "sre",
+    "operations",
+    "kubernetes",
+    "aws",
+    "monitoring",
+    "observability",
+    "capacity-planning",
+    "disaster-recovery"
+  ],
+  "search_boost_terms": [
+    "ownership",
+    "platform",
+    "sre",
+    "service owner",
+    "monitoring",
+    "logging",
+    "incident",
+    "capacity",
+    "dr",
+    "operations"
+  ]
+}

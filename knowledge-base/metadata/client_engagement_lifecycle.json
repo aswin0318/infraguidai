@@ -1,0 +1,105 @@
+{
+  "document_id": "IG-CEL-001",
+  "title": "Client Engagement Lifecycle",
+  "version": "1.0",
+  "owner": "Divya Rajan",
+  "owner_role": "Solutions Architect",
+  "department": "Solutions Architecture",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "operations",
+  "subcategory": "client-engagement",
+  "document_type": "process-guide",
+  "criticality": "high",
+  "review_cycle": "6 months",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "engagement_phases": [
+    "Discovery",
+    "Assessment",
+    "Solution Design",
+    "Implementation",
+    "Validation",
+    "Knowledge Transfer",
+    "Project Closure"
+  ],
+  "roles_involved": [
+    "Solutions Architect",
+    "Platform Engineer",
+    "DevOps Engineer",
+    "Security Engineer",
+    "Cloud Operations Engineer",
+    "Project Coordinator",
+    "Technical Account Manager"
+  ],
+  "key_topics": [
+    "Client Engagement",
+    "Project Lifecycle",
+    "Discovery",
+    "Assessment",
+    "Architecture Design",
+    "Implementation",
+    "Validation",
+    "Knowledge Transfer",
+    "Project Closure",
+    "Risk Management",
+    "Client Communication"
+  ],
+  "deliverables": [
+    "Discovery Notes",
+    "Requirements Document",
+    "Assessment Report",
+    "Architecture Diagram",
+    "Implementation Roadmap",
+    "Terraform Code",
+    "Validation Report",
+    "Training Materials",
+    "Closure Report"
+  ],
+  "risk_categories": [
+    "Technical Risks",
+    "Security Risks",
+    "Operational Risks",
+    "Schedule Risks"
+  ],
+  "success_metrics": [
+    "Client Satisfaction",
+    "On-Time Delivery",
+    "Documentation Completion",
+    "Security Review Completion",
+    "Knowledge Transfer Completion",
+    "Project Acceptance Rate"
+  ],
+  "related_documents": [
+    "company_profile.md",
+    "service_catalog.md",
+    "security_standards.md",
+    "deployment_runbook.md",
+    "incident_response_sop.md",
+    "terraform_reference_architectures.md"
+  ],
+  "tags": [
+    "client-engagement",
+    "project-lifecycle",
+    "delivery-framework",
+    "solution-design",
+    "implementation",
+    "validation",
+    "knowledge-transfer",
+    "project-closure"
+  ],
+  "search_boost_terms": [
+    "client onboarding",
+    "project lifecycle",
+    "discovery phase",
+    "assessment phase",
+    "solution design",
+    "implementation phase",
+    "validation phase",
+    "knowledge transfer",
+    "project closure",
+    "engagement lifecycle",
+    "delivery process",
+    "stakeholder management"
+  ]
+}

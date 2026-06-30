@@ -1,0 +1,27 @@
+# Read-only RBAC for the Log Intelligence Lambda. The Lambda's IAM role is
+# mapped (via EKS access entry) to the "log-intel-readers" group; this binding
+# grants that group read access to pods/events/logs for incident correlation.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: log-intel-readers
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "events", "namespaces", "nodes"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: log-intel-readers
+subjects:
+  - kind: Group
+    name: log-intel-readers
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: log-intel-readers
+  apiGroup: rbac.authorization.k8s.io

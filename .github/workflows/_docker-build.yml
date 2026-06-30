@@ -1,0 +1,41 @@
+name: Reusable - Docker Build + Trivy
+
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+      dockerfile:
+        required: true
+        type: string
+      context:
+        required: false
+        default: "."
+        type: string
+    outputs:
+      trivy-critical:
+        description: "true if CRITICAL vulnerabilities were found in the image"
+        value: ${{ jobs.build.outputs.trivy-critical }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      trivy-critical: ${{ steps.trivy.outputs.trivy-critical }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image (no push)
+        run: |
+          docker build -f "${{ inputs.dockerfile }}" -t "${{ inputs.service-name }}:ci" "${{ inputs.context }}"
+
+      - name: Trivy scan
+        id: trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+          if trivy image --severity CRITICAL --exit-code 1 --no-progress "${{ inputs.service-name }}:ci"; then
+            echo "trivy-critical=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "trivy-critical=true" >> "$GITHUB_OUTPUT"
+          fi

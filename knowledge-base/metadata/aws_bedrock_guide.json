@@ -1,0 +1,78 @@
+{
+  "document_id": "IG-AWS-BEDROCK-001",
+  "title": "AWS Bedrock Guide",
+  "version": "1.0",
+  "owner": "Rahul Varma",
+  "owner_role": "Solutions Architect",
+  "department": "Architecture",
+  "classification": "Internal Use Only",
+  "status": "Approved",
+  "category": "reference",
+  "subcategory": "aws-ai",
+  "document_type": "technical-guide",
+  "criticality": "high",
+  "review_cycle": "6 months",
+  "created_date": "2026-06-01",
+  "last_updated": "2026-06-01",
+  "services_covered": [
+    "Amazon Bedrock",
+    "Knowledge Bases",
+    "Agents",
+    "Guardrails",
+    "Foundation Models",
+    "Embedding Models"
+  ],
+  "key_topics": [
+    "RAG",
+    "Chunking",
+    "Embeddings",
+    "Vector Databases",
+    "Prompt Engineering",
+    "Agentic AI",
+    "Guardrails",
+    "Cost Optimization"
+  ],
+  "architecture_patterns": [
+    "Direct LLM",
+    "RAG",
+    "Agentic RAG",
+    "Multi-Agent Systems"
+  ],
+  "troubleshooting_scenarios": [
+    "Hallucinated answers",
+    "Poor retrieval",
+    "High Bedrock costs",
+    "Agent failures",
+    "Knowledge base quality issues",
+    "High latency"
+  ],
+  "terraform_examples": true,
+  "related_documents": [
+    "IG-PE-001",
+    "IG-COST-001",
+    "IG-SEC-001",
+    "IG-AWS-IAM-001"
+  ],
+  "tags": [
+    "bedrock",
+    "ai",
+    "rag",
+    "embeddings",
+    "agents",
+    "guardrails",
+    "llm",
+    "knowledge-base"
+  ],
+  "search_boost_terms": [
+    "rag",
+    "chunking",
+    "embeddings",
+    "vector database",
+    "bedrock",
+    "agent",
+    "guardrail",
+    "hallucination",
+    "prompt engineering",
+    "knowledge base"
+  ]
+}
